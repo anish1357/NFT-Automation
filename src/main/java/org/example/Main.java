@@ -20,7 +20,6 @@ public class Main {
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
         try {
             // Open the login page
             driver.get("https://treasurenft.xyz/#/"); // Change to actual URL
@@ -46,26 +45,31 @@ public class Main {
             WebElement usernameField = driver.findElement(By.xpath("//input[@placeholder='User name']"));
             WebElement passwordField = driver.findElement(By.xpath("//input[@placeholder='Password']"));
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
             usernameField.sendKeys("vasu1357");
             passwordField.sendKeys("Vasu@123");
             WebElement confirmButton = wait.until(ExpectedConditions.elementToBeClickable(
                     By.xpath("//div[@class='footerBtn']/button[contains(@class, 'ivu-btn-primary')]")
             ));
-                confirmButton.click();
+            confirmButton.click();
+            System.out.println("Login successful!");
 
-            Thread.sleep(15000);
-            if (driver.getCurrentUrl().contains("dashboard")) {
-                System.out.println("Login successful!");
-            } else {
-                System.out.println("Login failed!");
-            }
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("ivu-modal-wrap")));
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//image")));
+
+            WebElement ReserveTabInNavbar =  wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[contains(@class, 'pc-menu-wrap')]//div[contains(@class, 'pc-menu')]/span)[3]")));
+            ReserveTabInNavbar.click();
+            System.out.println("Clicked on Reserve Tab on Navbar");
+
+
+            WebElement closeButtonModal = driver.findElement(By.xpath("(//a[contains(@class, 'ivu-modal-close')]//i[contains(@class, 'ivu-icon-ios-close')])[3]"));
+            closeButtonModal.click();
+            System.out.println("Closed the Modal");
 
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            System.out.println("User Logged In");
+            System.out.println("Shutting Down");
 //            driver.quit();
         }
     }
